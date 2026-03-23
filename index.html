@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IWOS — Intelligent Workforce Optimization System</title>
+<style>
+  :root {
+    --bg: #0d1b2a;
+    --bg2: #142a3e;
+    --card: #0e2235;
+    --accent: #00b4d8;
+    --accent2: #90e0ef;
+    --white: #f0f6fc;
+    --grey: #8ba3be;
+    --red: #ff6b6b;
+    --green: #06d6a0;
+    --gold: #ffd166;
+    --font: 'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--white); font-family: var(--font); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(13,27,42,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,180,216,0.2);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+  }
+  .nav-brand { font-size: 1.1rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a { color: var(--grey); text-decoration: none; font-size: 0.9rem; transition: color .2s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta { background: var(--accent); color: var(--bg); padding: .45rem 1.1rem; border-radius: 6px; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: opacity .2s; }
+  .nav-cta:hover { opacity: .85; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 80px 2rem 4rem;
+    background: radial-gradient(ellipse at 50% 30%, rgba(0,180,216,0.08) 0%, transparent 70%);
+  }
+  .hero-badge {
+    display: inline-block; background: rgba(0,180,216,0.12); border: 1px solid rgba(0,180,216,0.3);
+    color: var(--accent); padding: .3rem 1rem; border-radius: 20px; font-size: .8rem;
+    font-weight: 600; letter-spacing: .1em; margin-bottom: 1.5rem;
+  }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { font-size: 1.15rem; color: var(--grey); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { background: var(--accent); color: var(--bg); padding: .75rem 2rem; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 1rem; transition: all .2s; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,180,216,.35); }
+  .btn-ghost { border: 1px solid rgba(0,180,216,.4); color: var(--accent); padding: .75rem 2rem; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 1rem; transition: all .2s; }
+  .btn-ghost:hover { background: rgba(0,180,216,.08); }
+  .hero-sub { margin-top: 3rem; color: var(--grey); font-size: .85rem; opacity: .6; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag { font-size: .75rem; font-weight: 700; letter-spacing: .15em; color: var(--accent); text-transform: uppercase; margin-bottom: .5rem; }
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; margin-bottom: 1rem; }
+  .section-desc { color: var(--grey); line-height: 1.7; max-width: 640px; margin-bottom: 2.5rem; }
+  .accent-line { width: 48px; height: 4px; background: var(--accent); border-radius: 2px; margin-bottom: 1.5rem; }
+
+  /* ── PROBLEM ── */
+  #problem { background: var(--bg); }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  .problem-card {
+    background: var(--card); border-left: 4px solid var(--red); padding: 1.5rem;
+    border-radius: 8px; position: relative; overflow: hidden;
+  }
+  .problem-card::before {
+    content: 'STATIC'; position: absolute; top: .5rem; right: .75rem;
+    font-size: .65rem; font-weight: 800; color: var(--red); opacity: .35; letter-spacing: .15em;
+  }
+  .problem-card .icon { font-size: 1.8rem; margin-bottom: .75rem; }
+  .problem-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+  .problem-card p { color: var(--grey); font-size: .88rem; line-height: 1.6; }
+  .gap-visual {
+    background: var(--card); border-radius: 12px; padding: 2rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .gap-box { flex: 1; min-width: 160px; background: var(--bg2); padding: 1.25rem; border-radius: 8px; text-align: center; }
+  .gap-box h4 { font-size: .9rem; font-weight: 700; margin-bottom: .3rem; }
+  .gap-box p { color: var(--grey); font-size: .8rem; }
+  .gap-center { text-align: center; min-width: 80px; }
+  .gap-center .x { font-size: 2rem; color: var(--red); font-weight: 800; }
+  .gap-center small { display: block; color: var(--red); font-size: .7rem; font-weight: 700; }
+  .result-bar {
+    background: rgba(255,107,107,.08); border: 1px solid rgba(255,107,107,.2);
+    border-radius: 8px; padding: 1rem 1.5rem; margin-top: 1.5rem;
+    color: var(--red); font-weight: 600; font-size: .95rem;
+  }
+
+  /* ── LOOP / SOLUTION ── */
+  #solution { background: linear-gradient(180deg, var(--bg) 0%, rgba(0,30,50,.8) 100%); }
+  .loop-container { display: flex; align-items: center; justify-content: center; position: relative; }
+  .loop-svg-wrap { position: relative; width: 420px; height: 420px; flex-shrink: 0; }
+  .loop-svg-wrap svg { width: 100%; height: 100%; }
+  .loop-center-label {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; pointer-events: none;
+  }
+  .loop-center-label .symbol { font-size: 2rem; color: var(--accent); }
+  .loop-center-label small { display: block; font-size: .7rem; color: var(--accent); font-weight: 700; letter-spacing: .1em; }
+  .loop-node {
+    position: absolute; width: 130px; background: var(--card);
+    border-radius: 10px; padding: .9rem .75rem; text-align: center;
+    border-top: 3px solid var(--accent);
+    box-shadow: 0 4px 20px rgba(0,0,0,.4);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .loop-node:hover { transform: scale(1.05); box-shadow: 0 8px 32px rgba(0,180,216,.25); }
+  .loop-node .num { font-size: .7rem; font-weight: 800; color: var(--accent); letter-spacing: .1em; }
+  .loop-node h4 { font-size: .95rem; font-weight: 700; margin: .2rem 0; }
+  .loop-node p { font-size: .75rem; color: var(--grey); line-height: 1.4; }
+  /* positions */
+  .ln-top    { top: -20px; left: 50%; transform: translateX(-50%); border-color: var(--accent); }
+  .ln-right  { top: 50%; right: -70px; transform: translateY(-50%); border-color: #48cae4; }
+  .ln-bottom { bottom: -20px; left: 50%; transform: translateX(-50%); border-color: #0096c7; }
+  .ln-left   { top: 50%; left: -70px; transform: translateY(-50%); border-color: #0277a8; }
+  .loop-note { margin-top: 2rem; text-align: center; color: var(--accent2); font-size: .9rem; font-style: italic; }
+
+  /* ── DEMO / RUN-THROUGH ── */
+  #demo { background: var(--bg2); }
+  .demo-steps { display: flex; flex-direction: column; gap: 1.5rem; }
+  .demo-step {
+    background: var(--card); border-radius: 12px; overflow: hidden;
+    border-left: 4px solid var(--accent);
+    cursor: pointer; transition: box-shadow .2s;
+  }
+  .demo-step:hover { box-shadow: 0 0 0 1px rgba(0,180,216,.3); }
+  .demo-step-header {
+    display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem;
+  }
+  .step-badge {
+    width: 36px; height: 36px; border-radius: 50%; background: rgba(0,180,216,.15);
+    border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: .85rem; color: var(--accent); flex-shrink: 0;
+  }
+  .demo-step-header h3 { font-size: 1rem; font-weight: 700; }
+  .demo-step-header p { color: var(--grey); font-size: .85rem; }
+  .step-arrow { margin-left: auto; color: var(--accent); font-size: 1.2rem; transition: transform .3s; }
+  .demo-step.open .step-arrow { transform: rotate(90deg); }
+  .demo-step-body { display: none; padding: 0 1.5rem 1.5rem; }
+  .demo-step.open .demo-step-body { display: block; }
+
+  /* mock UI elements inside steps */
+  .mock-profile { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .skill-bar-wrap { flex: 1; min-width: 160px; }
+  .skill-bar-wrap label { font-size: .8rem; color: var(--grey); display: flex; justify-content: space-between; margin-bottom: .3rem; }
+  .skill-bar { height: 8px; background: rgba(255,255,255,.08); border-radius: 4px; overflow: hidden; }
+  .skill-bar-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width 1.2s ease; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+  .tag { background: rgba(0,180,216,.1); border: 1px solid rgba(0,180,216,.25); color: var(--accent2); padding: .2rem .7rem; border-radius: 20px; font-size: .78rem; font-weight: 600; }
+  .tag.gap { background: rgba(255,107,107,.08); border-color: rgba(255,107,107,.25); color: var(--red); }
+  .match-result { background: var(--bg); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: .75rem; display: flex; align-items: center; gap: 1rem; }
+  .match-score { font-size: 1.5rem; font-weight: 800; color: var(--green); min-width: 56px; text-align: center; }
+  .match-info h4 { font-size: .95rem; font-weight: 700; margin-bottom: .2rem; }
+  .match-info p { font-size: .8rem; color: var(--grey); }
+  .learning-path { list-style: none; }
+  .learning-path li {
+    display: flex; align-items: flex-start; gap: .75rem;
+    padding: .7rem 0; border-bottom: 1px solid rgba(255,255,255,.05);
+  }
+  .lp-icon { font-size: 1.1rem; margin-top: .05rem; }
+  .lp-info strong { font-size: .9rem; display: block; margin-bottom: .15rem; }
+  .lp-info span { font-size: .78rem; color: var(--grey); }
+  .lp-badge { margin-left: auto; font-size: .72rem; font-weight: 700; padding: .2rem .6rem; border-radius: 12px; white-space: nowrap; }
+  .lp-badge.priority { background: rgba(255,209,102,.12); color: var(--gold); }
+  .lp-badge.done { background: rgba(6,214,160,.12); color: var(--green); }
+  .run-btn {
+    background: var(--accent); color: var(--bg); padding: .6rem 1.5rem;
+    border: none; border-radius: 8px; font-weight: 700; font-size: .9rem;
+    cursor: pointer; transition: all .2s; margin-top: .75rem;
+  }
+  .run-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+  /* ── METHODOLOGY ── */
+  #methodology { background: var(--bg); }
+  .flow-row { display: flex; align-items: center; gap: 0; overflow-x: auto; margin-bottom: 2.5rem; padding-bottom: .5rem; }
+  .flow-node { background: var(--card); padding: 1.25rem 1rem; min-width: 160px; border-radius: 8px; text-align: center; flex-shrink: 0; }
+  .flow-node .fn-label { font-size: .65rem; font-weight: 800; letter-spacing: .12em; color: var(--accent); margin-bottom: .3rem; }
+  .flow-node h4 { font-size: .92rem; font-weight: 700; margin-bottom: .3rem; }
+  .flow-node p { font-size: .75rem; color: var(--grey); line-height: 1.4; }
+  .flow-arrow { font-size: 1.5rem; color: var(--accent); padding: 0 .5rem; flex-shrink: 0; }
+  .pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .pillar { background: var(--card); border-radius: 10px; padding: 1.5rem; position: relative; overflow: hidden; }
+  .pillar-icon { font-size: 2rem; margin-bottom: .75rem; }
+  .pillar h3 { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
+  .pillar p { color: var(--grey); font-size: .88rem; line-height: 1.6; }
+  .pillar-accent { position: absolute; bottom: 0; left: 0; width: 4px; height: 100%; }
+
+  /* ── IMPACT ── */
+  #impact { background: var(--bg2); }
+  .impact-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: start; }
+  .impact-col h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: var(--accent); }
+  .impact-item { display: flex; gap: .75rem; margin-bottom: .9rem; align-items: flex-start; }
+  .impact-item .ico { font-size: 1.1rem; margin-top: .1rem; }
+  .impact-item p { font-size: .9rem; color: var(--grey); line-height: 1.5; }
+  .sdg-box {
+    background: var(--card); border-radius: 12px; padding: 1.5rem; text-align: center;
+    min-width: 180px; border: 1px solid rgba(255,209,102,.2);
+  }
+  .sdg-icon { background: #8f1838; border-radius: 8px; padding: .75rem 1.25rem; display: inline-block; margin-bottom: 1rem; }
+  .sdg-icon .sdg-num { font-size: 2.5rem; font-weight: 900; color: #fff; line-height: 1; }
+  .sdg-icon small { display: block; font-size: .55rem; color: rgba(255,255,255,.7); font-weight: 700; letter-spacing: .08em; }
+  .sdg-box h4 { font-size: .9rem; font-weight: 700; color: var(--gold); margin-bottom: .35rem; }
+  .sdg-box p { font-size: .78rem; color: var(--grey); line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #07101a; border-top: 1px solid rgba(0,180,216,.1);
+    padding: 2rem; text-align: center;
+  }
+  footer p { color: var(--grey); font-size: .82rem; margin-bottom: .4rem; }
+  footer .ip-shield { font-size: .75rem; color: #3a5060; font-style: italic; margin-top: .75rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .problem-grid { grid-template-columns: 1fr; }
+    .impact-grid { grid-template-columns: 1fr; }
+    .loop-svg-wrap { width: 300px; height: 300px; }
+    .ln-right { right: -60px; }
+    .ln-left  { left:  -60px; }
+  }
+
+  /* animation */
+  @keyframes spin { from { stroke-dashoffset: 500; } to { stroke-dashoffset: 0; } }
+  .ring-animated { stroke-dasharray: 500; animation: spin 6s linear infinite; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+  .fade-up { animation: fadeUp .6s ease both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">🗡️ IWOS</div>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#impact">Impact</a></li>
+  </ul>
+  <a href="#demo" class="nav-cta">Try Demo →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Georgian College · RISE 2026</div>
+  <h1>Intelligent <span>Workforce</span><br/>Optimization System</h1>
+  <p>Transforming how organizations understand talent, build teams, and develop expertise through intelligent systems.</p>
+  <div class="hero-btns">
+    <a href="#demo" class="btn-primary">▶ Run Mock Demo</a>
+    <a href="https://github.com/8LUEPRINT3" class="btn-ghost" target="_blank">GitHub ↗</a>
+  </div>
+  <p class="hero-sub">Femachi Ajoku &amp; Peter Egessa · Intelligent Systems</p>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="section-inner">
+    <div class="section-tag">The Problem</div>
+    <h2 class="section-title">Organizations are flying blind on their own talent.</h2>
+    <div class="accent-line"></div>
+    <p class="section-desc">Most companies still rely on <strong style="color:var(--red)">STATIC</strong> indicators that don't reflect real, current capability. The result? Wrong people, wrong teams, wrong outcomes.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="icon">📄</div>
+        <h3>Résumés</h3>
+        <p>A snapshot of the past — not a mirror of current capability. Skills evolve; documents don't.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🏷️</div>
+        <h3>Job Titles</h3>
+        <p>Organizational hierarchy ≠ actual skill. Titles reflect reporting lines, not technical depth.</p>
+      </div>
+      <div class="problem-card">
+        <div class="icon">🕐</div>
+        <h3>Years of Experience</h3>
+        <p>Time served is not expertise earned. Ten years can mean one year repeated ten times.</p>
+      </div>
+    </div>
+
+    <div class="gap-visual" style="margin-top:1.5rem">
+      <div class="gap-box" style="border-left:3px solid #48cae4">
+        <h4 style="color:#48cae4">📘 Learning Platforms</h4>
+        <p>Teach skills in isolation. No awareness of real project needs.</p>
+      </div>
+      <div class="gap-center">
+        <div class="x">✕</div>
+        <small>NO BRIDGE</small>
+      </div>
+      <div class="gap-box" style="border-left:3px solid #0096c7">
+        <h4 style="color:#0096c7">📋 Talent Management</h4>
+        <p>Assign roles by title. No real skill visibility or tracking.</p>
+      </div>
+      <div class="gap-center" style="color:var(--green); font-size:1.5rem">→</div>
+      <div class="gap-box" style="border-left:3px solid var(--accent)">
+        <h4 style="color:var(--accent)">🗡️ Our System</h4>
+        <p>Bridges both worlds into one continuous intelligence loop.</p>
+      </div>
+    </div>
+
+    <div class="result-bar">
+      ⚠️ Result: Mismatched teams &nbsp;·&nbsp; Generic training &nbsp;·&nbsp; Underutilized talent &nbsp;·&nbsp; Slower delivery &nbsp;·&nbsp; Stifled innovation
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION — LOOP -->
+<section id="solution">
+  <div class="section-inner">
+    <div class="section-tag">The Solution</div>
+    <h2 class="section-title">A closed-loop intelligence system.</h2>
+    <div class="accent-line"></div>
+    <p class="section-desc">Four stages that continuously repeat. Every cycle improves accuracy — for both individuals and teams.</p>
+
+    <div style="display:flex;justify-content:center;padding:3rem 0 1rem;position:relative;">
+      <div class="loop-svg-wrap">
+        <!-- SVG ring -->
+        <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="210" cy="210" r="130" stroke="rgba(0,180,216,0.15)" stroke-width="2"/>
+          <circle cx="210" cy="210" r="130" stroke="rgba(0,180,216,0.5)" stroke-width="2"
+                  stroke-dasharray="12 8" class="ring-animated"/>
+          <!-- arrows at 45° points -->
+          <text x="302" y="118" fill="#00b4d8" font-size="22" font-weight="bold">↗</text>
+          <text x="296" y="316" fill="#48cae4" font-size="22" font-weight="bold">↘</text>
+          <text x="104" y="316" fill="#0096c7" font-size="22" font-weight="bold">↙</text>
+          <text x="104" y="118" fill="#0277a8" font-size="22" font-weight="bold">↖</text>
+        </svg>
+        <!-- Center hub -->
+        <div class="loop-center-label">
+          <div class="symbol">↺</div>
+          <small>LOOP</small>
+        </div>
+        <!-- 4 nodes -->
+        <div class="loop-node ln-top" style="border-color:var(--accent)">
+          <div class="num">01</div>
+          <h4>ASSESS</h4>
+          <p>Structured skill evaluation</p>
+        </div>
+        <div class="loop-node ln-right" style="border-color:#48cae4;width:140px">
+          <div class="num">02</div>
+          <h4>PROFILE</h4>
+          <p>Dynamic capability profiles</p>
+        </div>
+        <div class="loop-node ln-bottom" style="border-color:#0096c7">
+          <div class="num">03</div>
+          <h4>MATCH</h4>
+          <p>Optimized team formation</p>
+        </div>
+        <div class="loop-node ln-left" style="border-color:#0277a8;width:140px">
+          <div class="num">04</div>
+          <h4>DEVELOP</h4>
+          <p>Personalized learning paths</p>
+        </div>
+      </div>
+    </div>
+    <p class="loop-note">↺ The loop self-improves — project performance feeds back into the assessment model.</p>
+  </div>
+</section>
+
+<!-- DEMO RUN-THROUGH -->
+<section id="demo">
+  <div class="section-inner">
+    <div class="section-tag">Interactive Demo</div>
+    <h2 class="section-title">Mock system run-through.</h2>
+    <div class="accent-line"></div>
+    <p class="section-desc">Follow a candidate — Alex — through the full IWOS pipeline: from assessment to team placement to learning path.</p>
+
+    <div class="demo-steps">
+
+      <!-- STEP 1: ASSESS -->
+      <div class="demo-step open" onclick="toggle(this)">
+        <div class="demo-step-header">
+          <div class="step-badge">01</div>
+          <div>
+            <h3>ASSESS — Structured Skill Evaluation</h3>
+            <p>Alex completes the IWOS competency assessment. The system measures real skills — not titles.</p>
+          </div>
+          <div class="step-arrow">›</div>
+        </div>
+        <div class="demo-step-body">
+          <p style="color:var(--grey);font-size:.9rem;margin-bottom:1rem;">📋 Alex's assessment scores across six dimensions:</p>
+          <div class="mock-profile">
+            <div class="skill-bar-wrap"><label><span>Python / Backend</span><span>88%</span></label><div class="skill-bar"><div class="skill-bar-fill" style="width:88%;background:var(--accent)"></div></div></div>
+            <div class="skill-bar-wrap"><label><span>System Design</span><span>74%</span></label><div class="skill-bar"><div class="skill-bar-fill" style="width:74%;background:#48cae4"></div></div></div>
+            <div class="skill-bar-wrap"><label><span>Data Analysis</span><span>81%</span></label><div class="skill-bar"><div class="skill-bar-fill" style="width:81%;background:#0096c7"></div></div></div>
+            <div class="skill-bar-wrap"><label><span>DevOps / CI/CD</span><span>45%</span></label><div class="skill-bar"><div class="skill-bar-fill" style="width:45%;background:var(--gold)"></div></div></div>
+            <div class="skill-bar-wrap"><label><span>UI / Frontend</span><span>32%</span></label><div class="skill-bar"><div class="skill-bar-fill" style="width:32%;background:var(--red)"></div></div></div>
+            <div class="skill-bar-wrap"><label><span>ML / AI</span><span>67%</span></label><div class="skill-bar"><div class="skill-bar-fill" style="width:67%;background:var(--green)"></div></div></div>
+          </div>
+          <p style="color:var(--grey);font-size:.85rem;margin-bottom:.5rem;">Identified strengths &amp; gaps:</p>
+          <div class="skill-tags">
+            <span class="tag">✓ Python</span><span class="tag">✓ Data Analysis</span><span class="tag">✓ System Design</span>
+            <span class="tag">✓ ML Basics</span>
+            <span class="tag gap">⚠ DevOps</span><span class="tag gap">⚠ Frontend</span>
+          </div>
+          <button class="run-btn" onclick="event.stopPropagation();nextStep()">Next: Build Profile →</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: PROFILE -->
+      <div class="demo-step" onclick="toggle(this)" id="step2">
+        <div class="demo-step-header">
+          <div class="step-badge">02</div>
+          <div>
+            <h3>PROFILE — Dynamic Capability Profile</h3>
+            <p>Alex's profile is built from real performance — not job title or years on a résumé.</p>
+          </div>
+          <div class="step-arrow">›</div>
+        </div>
+        <div class="demo-step-body">
+          <div style="background:var(--bg);border-radius:8px;padding:1.25rem;margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+              <div style="width:48px;height:48px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:var(--bg)">A</div>
+              <div>
+                <strong>Alex Chen</strong>
+                <div style="font-size:.8rem;color:var(--grey)">Mid-level Engineer · Assessment score: <span style="color:var(--green);font-weight:700">72/100</span></div>
+              </div>
+              <div style="margin-left:auto;background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.25);padding:.4rem .9rem;border-radius:20px;font-size:.8rem;color:var(--accent);font-weight:600">Profile Active</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;font-size:.85rem;">
+              <div><span style="color:var(--grey)">Core role fit:</span> <strong>Backend / Data Engineer</strong></div>
+              <div><span style="color:var(--grey)">Seniority band:</span> <strong>Mid → Senior track</strong></div>
+              <div><span style="color:var(--grey)">Top domain:</span> <strong>Python + Analytics</strong></div>
+              <div><span style="color:var(--grey)">Gap priority:</span> <strong style="color:var(--gold)">DevOps (critical)</strong></div>
+            </div>
+          </div>
+          <p style="color:var(--grey);font-size:.85rem;font-style:italic">↺ This profile updates automatically after each project cycle.</p>
+          <button class="run-btn" onclick="event.stopPropagation();nextStep2()">Next: Match to Project →</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: MATCH -->
+      <div class="demo-step" onclick="toggle(this)" id="step3">
+        <div class="demo-step-header">
+          <div class="step-badge">03</div>
+          <div>
+            <h3>MATCH — Optimized Team Formation</h3>
+            <p>IWOS scans active projects and scores Alex against each team requirement.</p>
+          </div>
+          <div class="step-arrow">›</div>
+        </div>
+        <div class="demo-step-body">
+          <p style="color:var(--grey);font-size:.85rem;margin-bottom:1rem;">3 active projects scored against Alex's profile:</p>
+          <div class="match-result" style="border-left:4px solid var(--green)">
+            <div class="match-score">94%</div>
+            <div class="match-info">
+              <h4>🏆 Project Alpha — Data Pipeline Automation</h4>
+              <p>Needs: Python (✓), Data Analysis (✓), System Design (✓) · DevOps gap covered by teammate</p>
+            </div>
+            <div style="background:rgba(6,214,160,.1);color:var(--green);padding:.3rem .7rem;border-radius:6px;font-size:.75rem;font-weight:700;margin-left:auto">BEST FIT</div>
+          </div>
+          <div class="match-result" style="border-left:4px solid var(--gold)">
+            <div class="match-score" style="color:var(--gold)">71%</div>
+            <div class="match-info">
+              <h4>Project Beta — ML Model Integration</h4>
+              <p>Needs: ML/AI (partial ✓), Python (✓), Frontend (✗ gap)</p>
+            </div>
+          </div>
+          <div class="match-result" style="border-left:4px solid rgba(255,107,107,.4)">
+            <div class="match-score" style="color:var(--red)">38%</div>
+            <div class="match-info">
+              <h4>Project Gamma — Full-Stack Dashboard</h4>
+              <p>Needs: Frontend (✗), DevOps (✗), UI/UX (✗) — poor fit</p>
+            </div>
+          </div>
+          <p style="color:var(--accent2);font-size:.85rem;margin-top:.75rem;font-style:italic">✓ Alex is recommended for <strong>Project Alpha</strong>. Team now has full skill coverage.</p>
+          <button class="run-btn" onclick="event.stopPropagation();nextStep3()">Next: Generate Learning Path →</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: DEVELOP -->
+      <div class="demo-step" onclick="toggle(this)" id="step4">
+        <div class="demo-step-header">
+          <div class="step-badge">04</div>
+          <div>
+            <h3>DEVELOP — Personalized Learning Path</h3>
+            <p>Based on Alex's gaps and project outcomes, IWOS generates a targeted growth roadmap.</p>
+          </div>
+          <div class="step-arrow">›</div>
+        </div>
+        <div class="demo-step-body">
+          <p style="color:var(--grey);font-size:.85rem;margin-bottom:1rem;">Alex's personalized learning roadmap (Q2 2026):</p>
+          <ul class="learning-path">
+            <li>
+              <div class="lp-icon">⚡</div>
+              <div class="lp-info">
+                <strong>Docker & Container Fundamentals</strong>
+                <span>Close the DevOps gap · Est. 8 hrs · Priority blocker for future projects</span>
+              </div>
+              <div class="lp-badge priority">HIGH PRIORITY</div>
+            </li>
+            <li>
+              <div class="lp-icon">🔧</div>
+              <div class="lp-info">
+                <strong>CI/CD Pipeline Design (GitHub Actions)</strong>
+                <span>Builds on Docker module · Est. 6 hrs</span>
+              </div>
+              <div class="lp-badge priority">PRIORITY</div>
+            </li>
+            <li>
+              <div class="lp-icon">📊</div>
+              <div class="lp-info">
+                <strong>Advanced Data Engineering Patterns</strong>
+                <span>Strengthen core strength · Est. 10 hrs</span>
+              </div>
+              <div class="lp-badge done">IN PROGRESS</div>
+            </li>
+            <li>
+              <div class="lp-icon">🤖</div>
+              <div class="lp-info">
+                <strong>ML Pipeline Integration</strong>
+                <span>Expand into ML domain · Est. 12 hrs · Unlocks Project Beta eligibility</span>
+              </div>
+              <div class="lp-badge" style="background:rgba(144,224,239,.08);color:var(--accent2)">QUEUED</div>
+            </li>
+          </ul>
+          <div style="background:rgba(0,180,216,.06);border:1px solid rgba(0,180,216,.15);border-radius:8px;padding:1rem;margin-top:1.25rem;">
+            <p style="font-size:.85rem;color:var(--accent2)">↺ <strong>Loop complete.</strong> After Project Alpha, Alex's performance data updates the profile — match scores and learning paths recalibrate automatically.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="methodology">
+  <div class="section-inner">
+    <div class="section-tag">Methodology</div>
+    <h2 class="section-title">Three pillars. One system.</h2>
+    <div class="accent-line"></div>
+
+    <div class="flow-row">
+      <div class="flow-node" style="border-top:3px solid var(--grey)">
+        <div class="fn-label">INPUT</div>
+        <h4>Raw Data</h4>
+        <p>Assessments, project history, feedback</p>
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-node" style="border-top:3px solid var(--accent)">
+        <div class="fn-label">ANALYSIS</div>
+        <h4>Competency Engine</h4>
+        <p>Multi-dimensional skill evaluation &amp; scoring</p>
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-node" style="border-top:3px solid #48cae4">
+        <div class="fn-label">MATCHING</div>
+        <h4>Alignment Algorithm</h4>
+        <p>Skill-to-project requirement mapping</p>
+      </div>
+      <div class="flow-arrow">➔</div>
+      <div class="flow-node" style="border-top:3px solid var(--green)">
+        <div class="fn-label">OUTPUT</div>
+        <h4>Teams + Paths</h4>
+        <p>Optimized teams formed, learning paths generated</p>
+      </div>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="pillar-accent" style="background:var(--accent)"></div>
+        <div class="pillar-icon">◉</div>
+        <h3>Competency Assessment Framework</h3>
+        <p>Multi-dimensional evaluation across technical skills, problem-solving ability, and applied knowledge. Measures depth and breadth — not just credentials.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-accent" style="background:#48cae4"></div>
+        <div class="pillar-icon">⬡</div>
+        <h3>Skill-Based Matching Model</h3>
+        <p>Structured skill representation maps individuals to project requirements. Interlocking puzzle logic — the right people, not just the available people.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-accent" style="background:var(--green)"></div>
+        <div class="pillar-icon">↗</div>
+        <h3>Adaptive Learning Mechanism</h3>
+        <p>Gaps identified → targeted content served → expertise accelerated. Project outcomes feed back into the model, improving accuracy over time.</p>
+      </div>
+    </div>
+    <p style="color:var(--grey);font-size:.85rem;margin-top:1.5rem;font-style:italic;text-align:center">Iterative by design — the system gets smarter with every project cycle.</p>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="section-inner">
+    <div class="section-tag">Impact</div>
+    <h2 class="section-title">Better outcomes at every level.</h2>
+    <div class="accent-line"></div>
+
+    <div class="impact-grid">
+      <div class="impact-col">
+        <h3>🏢 For Organizations</h3>
+        <div class="impact-item"><div class="ico">↑</div><p>Higher project success rates through skill-matched team formation</p></div>
+        <div class="impact-item"><div class="ico">↓</div><p>Reduced time to expertise with targeted learning pathways</p></div>
+        <div class="impact-item"><div class="ico">⚡</div><p>Better utilization of existing talent — no more hidden skills</p></div>
+        <div class="impact-item"><div class="ico">📊</div><p>Data-driven team formation replaces gut-feel decisions</p></div>
+      </div>
+
+      <div class="sdg-box">
+        <div class="sdg-icon">
+          <div class="sdg-num">8</div>
+          <small>DECENT WORK &amp;<br/>ECONOMIC GROWTH</small>
+        </div>
+        <h4>UN SDG 8</h4>
+        <p>Directly advances productive employment, decent work, and inclusive economic growth.</p>
+      </div>
+
+      <div class="impact-col">
+        <h3>👤 For Individuals</h3>
+        <div class="impact-item"><div class="ico">🎯</div><p>Meaningful, well-matched work assignments based on actual skills</p></div>
+        <div class="impact-item"><div class="ico">📚</div><p>Targeted development paths that close real gaps, not generic courses</p></div>
+        <div class="impact-item"><div class="ico">🚀</div><p>Faster growth toward expertise with feedback-driven learning</p></div>
+        <div class="impact-item"><div class="ico">✅</div><p>Inclusive, merit-based opportunities regardless of title or tenure</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>🗡️ <strong>IWOS</strong> — Intelligent Workforce Optimization System</p>
+  <p>Femachi Ajoku &amp; Peter Egessa &nbsp;·&nbsp; Georgian College · RISE 2026</p>
+  <p><a href="https://github.com/8LUEPRINT3" target="_blank">github.com/8LUEPRINT3</a></p>
+  <p class="ip-shield">Certain technical components are proprietary and have been intentionally abstracted.</p>
+</footer>
+
+<script>
+function toggle(el) {
+  el.classList.toggle('open');
+}
+function nextStep() {
+  var s2 = document.getElementById('step2');
+  s2.classList.add('open');
+  s2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function nextStep2() {
+  var s3 = document.getElementById('step3');
+  s3.classList.add('open');
+  s3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function nextStep3() {
+  var s4 = document.getElementById('step4');
+  s4.classList.add('open');
+  s4.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+// Animate skill bars on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+        const w = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => { bar.style.width = w; }, 100);
+      });
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.demo-step').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
